@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="data:image/ico;base64,aWNv">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简单页面示例</title>
+</head>
+<body>
+    <form id="myForm">
+        <label for="dialogue">对话信息：</label>
+        <input type="text" id="dialogue" name="dialogue" required size="2000">
+        <button type="submit">提交</button>
+    </form>
+    <div id="output"></div>
+    <script>
+        const form = document.getElementById('myForm');
+        const output = document.getElementById('output');
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault(); // 阻止表单默认提交行为
+            const dialogue = document.getElementById('dialogue').value;
+            fetch('/api/audit-test', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ dialogue })
+            })
+            .then(response => response.json())
+            .then(text => output.innerText = text)
+            .catch(error => console.error(error));
+        });
+    </script>
+</body>
+</html>
